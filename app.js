@@ -32,7 +32,7 @@
   app.use("/users", usersRouter);
   app.use("/products", productsRouter);
   app.use("/owners/products", productsRouter);
-  // app.use('/payment', paymentRouter);
+
 
 
   app.listen(3000);
