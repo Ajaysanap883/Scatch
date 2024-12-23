@@ -1,0 +1,67 @@
+<%- include('./partials/header') %>
+<% if (success && success.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+      <%= success %>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+      <%= error %>
+  </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-20 py-20 ">
+  <div class="w-[20%] flex h-screen flex-col items-start">
+    <div class="flex items-center gap-2">
+      <h3>Sort by</h3>
+      <form action="/shop">
+        <select class="border-[1px] px-2 py-1" name="sortby" id="sortby">
+          <option value="popular">Popular</option>
+          <option value="newest">Newest</option>
+        </select>
+      </form>
+    </div>
+    <div class="flex flex-col mt-20">
+      <a class="block w-fit mb-2" href="/new-collection">New Collection</a>
+      <a class="block w-fit mb-2" href="/all-products">All Products</a>
+      <a class="block w-fit mb-2" href="/discounted-products">Discounted Products</a>
+    </div>
+    <div class="mt-32">
+      <a class="block w-fit mb-2" href="">Filter by :</a>
+      <a class="block w-fit mb-2" href="/availability">Availability</a>
+      <a class="block w-fit mb-2" href="/discount">Discount</a>
+    </div>
+  </div>    
+  <div class="w-[80%] flex flex-col gap-5 h-screen">
+    <div class="flex items-start gap-5">
+      <% products.forEach(function(product){ %>
+      <div class="w-55 bg-white rounded-lg shadow-lg overflow-hidden"> <!-- Added shadow and border radius -->
+        <div class="w-full h-52 flex items-center justify-center">
+          <img
+            class="object-cover h-[13rem] w-[15rem]"
+            src="data:image/jpeg;base64,<%= product.image %>"
+            alt="<%= product.name %>"
+          />
+        </div>
+        <div
+          class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]"
+        >
+          <div>
+            <h3><%= product.name %></h3>
+            <h4>₹ <%= product.price %></h4>
+          </div>
+          <a
+            class="w-7 h-7 flex items-center justify-center rounded-full bg-white cursor-pointer"
+            href="/addtocart/<%= product._id %>"
+            title="View Product">
+            <i class="ri-add-line"></i>
+          </a>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+<%- include('./partials/footer') %>
+

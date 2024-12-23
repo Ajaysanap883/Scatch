@@ -1,21 +1,38 @@
-const express= require("express");
-const app = express();
-const cookieParser=require("cookie-parser");
-const path = require('path');
-const ownersRouter = require("./routes/ownersRouter")
-const usersRouter = require("./routes/usersRouter");
-const productsRouter = require("./routes/productsRouter");
+  const express = require("express");
+  const app = express();
+  const cookieParser = require("cookie-parser");
+  const path = require("path");
+  const ownersRouter = require("./routes/ownersRouter");
+  const usersRouter = require("./routes/usersRouter");
+  const productsRouter = require("./routes/productsRouter");
+  const indexRouter = require("./routes/index");
+  const paymentRouter = require("./routes/paymentRouter");
+  const expressSession = require("express-session");
+  const flash = require("connect-flash");
 
-const db = require("./config/mongoose-connection");
+  require("dotenv").config();
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname,"public")));
-app.set("view engine","ejs");
+  const db = require("./config/mongoose-connection");
 
-app.use("/owners",ownersRouter);
-app.use("/users",usersRouter);
-app.use("/product",productsRouter);
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
+  app.use(expressSession({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    
+  }));
+  app.use(flash());
+  app.use(express.static(path.join(__dirname, "public")));
+  app.set("view engine", "ejs");
 
-app.listen(3000);
+  app.use("/", indexRouter);
+  app.use("/owners", ownersRouter);
+  app.use("/users", usersRouter);
+  app.use("/products", productsRouter);
+  app.use("/owners/products", productsRouter);
+  // app.use('/payment', paymentRouter);
+
+
+  app.listen(3000);
